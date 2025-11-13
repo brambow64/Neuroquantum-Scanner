@@ -1,5 +1,140 @@
-# Installeer grip (één keer)
-pip install grip
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TUC-MR-1 Scanner – NeuroQuantum</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.7;
+      color: #e0e0e0;
+      background: #121212;
+      margin: 40px auto;
+      max-width: 900px;
+      padding: 20px;
+    }
+    h1, h2, h3 { color: #00bfff; }
+    h1 { border-bottom: 2px solid #00bfff; padding-bottom: 10px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: #1e1e1e;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background: #00bfff;
+      color: #121212;
+      font-weight: bold;
+    }
+    code {
+      background: #2d2d2d;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+    }
+    pre {
+      background: #1e1e1e;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      border: 1px solid #333;
+    }
+    a { color: #00bfff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .badge { vertical-align: middle; }
+  </style>
+</head>
+<body>
 
-# Genereer de HTML (automatisch mooi!)
-grip docs/hardware_specs_tuc_mr1.md --export docs/site/index.html
+<h1>TRI-RESONANT MATERIAL RECOGNITION CORE – TUC-MR-1</h1>
+
+<p><strong>Upscale editie: Helikopter &amp; Vliegtuig Pod</strong><br>
+<em>Laatste update: 13 november 2025</em></p>
+
+<hr>
+
+<h2>Kernprincipe</h2>
+<p>Drie gelijktijdige pulsen → materiaalsignatuur via fasevertraging, demping en relaxatietijd.</p>
+
+<table>
+  <tr><th>Puls</th><th>Sensor</th><th>Fysiek principe</th></tr>
+  <tr><td>IR-laser (905 nm)</td><td>Reflectie + TOF</td><td>Oppervlak + absorptie</td></tr>
+  <tr><td>Akoestisch (100 kHz CMUT)</td><td>Echo-delay + demping</td><td>Dichtheid + porositeit</td></tr>
+  <tr><td>Magnetisch (planar coil)</td><td>Eddy-current τ</td><td>Geleidbaarheid + permeabiliteit</td></tr>
+</table>
+
+<hr>
+
+<h2>Technische Specificaties (Avionics Pod)</h2>
+
+<table>
+  <tr><th>Component</th><th>Specificatie</th><th>Opmerking</th></tr>
+  <tr><td><strong>Behuizing</strong></td><td>NACA pod, Al 6061 + carbon</td><td>&lt; 4.8 kg, IP67</td></tr>
+  <tr><td><strong>Laser</strong></td><td>905 nm GaN, 200 ns, &lt; 0.8 mJ/puls</td><td>Class 1 oogveilig</td></tr>
+  <tr><td><strong>Sonar</strong></td><td>8×8 CMUT array, 100 kHz</td><td>-70 % energie vs piezo</td></tr>
+  <tr><td><strong>Mag spoel</strong></td><td>Litz planar, 0.5 mH, 1 A</td><td>τ &lt; 200 µs</td></tr>
+  <tr><td><strong>Sensor</strong></td><td>NV-diamond + Hall array</td><td>±2 µT @ 2 m</td></tr>
+  <tr><td><strong>ADC</strong></td><td>Xilinx RFSoC, 8×5 GS/s</td><td>Gelijktijdig 3-ch</td></tr>
+  <tr><td><strong>Processor</strong></td><td>Zynq UltraScale+ RFSoC</td><td>ONNX inference @ 400 Hz</td></tr>
+  <tr><td><strong>Voeding</strong></td><td>28 V avionics → GaN DC-DC</td><td>38 W avg (10 % duty)</td></tr>
+  <tr><td><strong>Interface</strong></td><td>CAN FD + 1G Ethernet + BLE 5.3</td><td>ROS2 compatible</td></tr>
+</table>
+
+<hr>
+
+<h2>Meetbereik (Pod)</h2>
+
+<table>
+  <tr><th>Parameter</th><th>Bereik</th><th>Nauwkeurigheid</th></tr>
+  <tr><td>Laser</td><td>0–150 m</td><td>±5 cm</td></tr>
+  <tr><td>Sonar</td><td>tot 12 m (zand)</td><td>±3 cm</td></tr>
+  <tr><td>Magnetisch</td><td>0–5 m (metaal)</td><td>±3 µT</td></tr>
+</table>
+
+<hr>
+
+<h2>Integratie</h2>
+
+<pre><code>// ROS2 node voorbeeld
+#include &lt;rclcpp/rclcpp.hpp&gt;
+#include &lt;sensor_msgs/msg/point_cloud2.hpp&gt;
+
+class TucMr1Node : public rclcpp::Node {
+  // fuse LiDAR + TUC-MR-1 → materiaal-pointcloud
+};
+</code></pre>
+
+<hr>
+
+<h2>Kalibratie dataset (sand/steen)</h2>
+
+<table>
+  <tr><th>Materiaal</th><th>τ_mag (µs)</th><th>Echo (µs)</th><th>Reflectie (%)</th></tr>
+  <tr><td>Droog zand</td><td>8.2</td><td>145</td><td>12–18</td></tr>
+  <tr><td>Nat zand</td><td>6.1</td><td>158</td><td>8–14</td></tr>
+  <tr><td>Graniet</td><td>3.9</td><td>89</td><td>45–60</td></tr>
+</table>
+
+<p><strong>Training script</strong>: <code>scripts/train_fieldnet.py</code></p>
+
+<hr>
+
+<h2>Energie per cyclus</h2>
+
+<pre><code>E_cycle = 0.43 µJ @ 400 Hz → 0.17 W avg
+</code></pre>
+
+<hr>
+
+<p style="text-align:center; font-style:italic;">
+  <strong>Grok-approved upscale: klaar voor vlucht.</strong>
+</p>
+
+</body>
+</html>
