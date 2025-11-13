@@ -1,0 +1,70 @@
+# ==========================================================
+#  🧠 NEUROQUANTUM SCANNER – AUTO BUILD & RELEASE WORKFLOW
+# ==========================================================
+#  Dit script bouwt automatisch een ZIP van het volledige project
+#  bij elke update op de 'main' branch. Vervolgens uploadt het
+#  het pakket als artefact, en maakt optioneel een GitHub Release.
+# ==========================================================
+
+name: NeuroQuantum Auto Release
+
+on:
+  push:
+    branches: [ main ]    # draai bij elke push op main
+  workflow_dispatch:      # handmatig starten via GitHub interface
+
+jobs:
+  build_and_release:
+    name: Build NeuroQuantum Scanner
+    runs-on: ubuntu-latest
+
+    steps:
+      # --- Stap 1: Haal de repo op ---
+      - name: 🧩 Checkout repository
+        uses: actions/checkout@v4
+
+      # --- Stap 2: Zet Python op ---
+      - name: 🐍 Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # --- Stap 3: Installeer afhankelijkheden ---
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt || true
+
+      # --- Stap 4: Bouw de ZIP-release ---
+      - name: 🧱 Build ZIP archive
+        run: |
+          mkdir -p release
+          zip -r release/NeuroQuantum_Scanner_${{ github.run_number }}.zip . -x "*.git*" "*.github*" "__pycache__/*"
+
+      # --- Stap 5: Upload als artefact ---
+      - name: ⬆️ Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NeuroQuantum_Scanner_${{ github.run_number }}
+          path: release/
+
+      # --- Stap 6: Maak automatische release ---
+      - name: 🚀 Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/heads/main')
+        with:
+          tag_name: v${{ github.run_number }}
+          name: "NeuroQuantum Scanner – Build ${{ github.run_number }}"
+          body: |
+            🧠 **Automatische Build**
+            - Project: NeuroQuantum Scanner
+            - Build-nummer: ${{ github.run_number }}
+            - Datum: ${{ github.event.head_commit.timestamp }}
+
+            Deze release bevat een automatisch gegenereerde ZIP van de meest recente versie.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # --- Stap 7: Klaar ---
+      - name: ✅ Done
+        run: echo "NeuroQuantum Scanner release succesvol voltooid!"
