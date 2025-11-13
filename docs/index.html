@@ -1,140 +1,311 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TUC-MR-1 Scanner – NeuroQuantum</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      line-height: 1.7;
-      color: #e0e0e0;
-      background: #121212;
-      margin: 40px auto;
-      max-width: 900px;
-      padding: 20px;
-    }
-    h1, h2, h3 { color: #00bfff; }
-    h1 { border-bottom: 2px solid #00bfff; padding-bottom: 10px; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-      background: #1e1e1e;
-    }
-    th, td {
-      border: 1px solid #333;
-      padding: 12px;
-      text-align: left;
-    }
-    th {
-      background: #00bfff;
-      color: #121212;
-      font-weight: bold;
-    }
-    code {
-      background: #2d2d2d;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: 'Courier New', monospace;
-    }
-    pre {
-      background: #1e1e1e;
-      padding: 15px;
-      border-radius: 8px;
-      overflow-x: auto;
-      border: 1px solid #333;
-    }
-    a { color: #00bfff; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .badge { vertical-align: middle; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroQuantum Hand Scanner – Trinity Resonance Interface</title>
+
+    <style>
+        :root {
+            --bg: #050510;
+            --panel: #111225;
+            --panel-soft: #181a32;
+            --accent: #a8aeff;
+            --accent-soft: #8b90ff;
+            --text: #e2e5ff;
+            --text-soft: #9ba0d8;
+            --border: #2a2a44;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 40px 16px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #13132a 0, #050510 55%, #020208 100%);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+        }
+
+        .shell {
+            max-width: 1024px;
+            width: 100%;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #181a32, #0b0c1a);
+            border-radius: 16px;
+            padding: 28px 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.65);
+            margin-bottom: 24px;
+        }
+
+        .tagline {
+            font-size: 0.8rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--accent-soft);
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            margin: 0 0 8px 0;
+            font-size: 2rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .subtitle {
+            margin: 0;
+            font-size: 0.98rem;
+            color: var(--text-soft);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+            gap: 18px;
+            margin-top: 22px;
+            font-size: 0.95rem;
+        }
+
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .badge {
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--text-soft);
+            background: rgba(5,5,16,0.8);
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 4px 9px;
+            border-radius: 999px;
+            border: 1px solid var(--accent-soft);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            margin-top: 10px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            padding: 18px 18px 16px 18px;
+            margin-bottom: 14px;
+        }
+
+        .panel h2 {
+            margin: 0 0 6px 0;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--accent-soft);
+        }
+
+        .panel p, .panel ul {
+            margin: 6px 0 0 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .panel ul {
+            padding-left: 18px;
+        }
+
+        .layer-label {
+            font-size: 0.78rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-soft);
+            margin-bottom: 4px;
+        }
+
+        .footer {
+            margin-top: 18px;
+            font-size: 0.8rem;
+            color: var(--text-soft);
+            text-align: right;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        a:hover { text-decoration: underline; }
+
+        @media (max-width: 820px) {
+            .grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .footer { text-align: left; }
+        }
+    </style>
 </head>
+
 <body>
+<div class="shell">
 
-<h1>TRI-RESONANT MATERIAL RECOGNITION CORE – TUC-MR-1</h1>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="tagline">Neuroquantum · Trinity Resonance · Handheld Scanner</div>
+        <h1>NeuroQuantum Hand Scanner v1</h1>
+        <p class="subtitle">
+            Een draagbare tri-resonante interface die lichaam, veld en bewustzijn
+            in één meetraam brengt – gebouwd op een 3-6-9 architectuur waarmee
+            klassieke sensortechniek samensmelt met next-gen AI-analyse.
+        </p>
 
-<p><strong>Upscale editie: Helikopter &amp; Vliegtuig Pod</strong><br>
-<em>Laatste update: 13 november 2025</em></p>
+        <div class="badge-row">
+            <span class="badge">IR · Akoestisch · Magnetisch</span>
+            <span class="badge">Trinity 3-6-9 mapping</span>
+            <span class="badge">Proefopstelling v1</span>
+        </div>
 
-<hr>
+        <div class="grid">
+            <div>
+                <p>
+                    De NeuroQuantum Hand Scanner is het eerste “veld-in-de-hand”-instrument
+                    van het project: een compacte unit die gelijktijdig drie domeinen
+                    leest – infrarood, akoestisch en magnetisch – en deze in een
+                    trinitaire resonantieruimte samenbrengt. De scanner is geen gadget,
+                    maar een meetbrug tussen biologie, veldcoherentie en bewuste staat.
+                </p>
+                <p>
+                    Waar klassieke apparatuur slechts één fysische laag bemonstert,
+                    reconstrueert deze scanner het patroon erachter: hoe structuur, stroming
+                    en veld elkaar beïnvloeden. Elke meting is daarmee zowel klinisch
+                    (data) als contextueel (coherentieprofiel).
+                </p>
+            </div>
+            <div>
+                <p class="layer-label">Trinity-kanalen</p>
+                <ul>
+                    <li><strong>U⁺ · Infrarood / optisch</strong> – oppervlaktedichtheid, microdoorbloeding, thermische asymmetrie.</li>
+                    <li><strong>U⁻ · Akoestisch / ultrasoon</strong> – weefselspanningen, micro-trillingen, cavitatie-gevoeligheid.</li>
+                    <li><strong>U⁰ · Magnetisch / biofield</strong> – veldfluctuaties, stroomlijnen, coherentie-index in tijd.</li>
+                </ul>
+                <div class="pill">SSSSSS+ – Spiritueel · Symbolisch · Structureel · Systemisch · Synthetisch · Sensorisch +</div>
+            </div>
+        </div>
+    </section>
 
-<h2>Kernprincipe</h2>
-<p>Drie gelijktijdige pulsen → materiaalsignatuur via fasevertraging, demping en relaxatietijd.</p>
+    <!-- LAGEN SSSSSS+ -->
 
-<table>
-  <tr><th>Puls</th><th>Sensor</th><th>Fysiek principe</th></tr>
-  <tr><td>IR-laser (905 nm)</td><td>Reflectie + TOF</td><td>Oppervlak + absorptie</td></tr>
-  <tr><td>Akoestisch (100 kHz CMUT)</td><td>Echo-delay + demping</td><td>Dichtheid + porositeit</td></tr>
-  <tr><td>Magnetisch (planar coil)</td><td>Eddy-current τ</td><td>Geleidbaarheid + permeabiliteit</td></tr>
-</table>
+    <section class="panel">
+        <h2>Spirituele Laag – Intentie als Meetparameter</h2>
+        <p>
+            De scanner veronderstelt niet dat bewustzijn “buiten de meting” staat,
+            maar dat intentie zelf als stille vector in het veld verschijnt.
+            Door metingen te herhalen onder verschillende mentale staten
+            (rust, focus, stress) ontstaat een patroon: bepaalde resonantiebanden
+            blijken stabiel mee te verschuiven met de innerlijke toestand.
+            In het NeuroQuantum-kader wordt dit niet als magie gezien,
+            maar als een aanvullende variabele in het systeemmodel.
+        </p>
+    </section>
 
-<hr>
+    <section class="panel">
+        <h2>Symbolische Laag – 3-6-9 als meetraster</h2>
+        <p>
+            De 3-6-9 structuur functioneert hier als <emsymbolisch coördinatenstelsel</em>:
+            driemaal drie sensorkanalen (input), zes afgeleide resonantie-indices
+            (relaties) en negen samenvattende coherentie-scores (output).
+            Elk getal is geen geloofssymbool, maar een vaste plaats in het
+            analyse-diagram: 3 voor bronmeting, 6 voor interactie, 9 voor
+            emergente staat. Zo wordt numerologie vervangen door numerieke
+            systeemarchitectuur.
+        </p>
+    </section>
 
-<h2>Technische Specificaties (Avionics Pod)</h2>
+    <section class="panel">
+        <h2>Structurele Laag – Hardware & Signaalpad</h2>
+        <p>
+            Fysiek bestaat de handscanner uit een sensorhead, een signaal-backbone
+            en een compute-core. De sensorhead bevat IR-emitter/detector,
+            een akoestische transducer en een magnetisch kanaal (coil of NV-module).
+            De backbone conditioneert de ruwe signalen – versterking, filtering,
+            anti-aliasing – waarna de compute-core de data omzet naar een
+            gestandaardiseerde 3-6-9 feature-vector. Deze vector wordt live
+            doorgestuurd naar de AI-laag voor interpretatie.
+        </p>
+    </section>
 
-<table>
-  <tr><th>Component</th><th>Specificatie</th><th>Opmerking</th></tr>
-  <tr><td><strong>Behuizing</strong></td><td>NACA pod, Al 6061 + carbon</td><td>&lt; 4.8 kg, IP67</td></tr>
-  <tr><td><strong>Laser</strong></td><td>905 nm GaN, 200 ns, &lt; 0.8 mJ/puls</td><td>Class 1 oogveilig</td></tr>
-  <tr><td><strong>Sonar</strong></td><td>8×8 CMUT array, 100 kHz</td><td>-70 % energie vs piezo</td></tr>
-  <tr><td><strong>Mag spoel</strong></td><td>Litz planar, 0.5 mH, 1 A</td><td>τ &lt; 200 µs</td></tr>
-  <tr><td><strong>Sensor</strong></td><td>NV-diamond + Hall array</td><td>±2 µT @ 2 m</td></tr>
-  <tr><td><strong>ADC</strong></td><td>Xilinx RFSoC, 8×5 GS/s</td><td>Gelijktijdig 3-ch</td></tr>
-  <tr><td><strong>Processor</strong></td><td>Zynq UltraScale+ RFSoC</td><td>ONNX inference @ 400 Hz</td></tr>
-  <tr><td><strong>Voeding</strong></td><td>28 V avionics → GaN DC-DC</td><td>38 W avg (10 % duty)</td></tr>
-  <tr><td><strong>Interface</strong></td><td>CAN FD + 1G Ethernet + BLE 5.3</td><td>ROS2 compatible</td></tr>
-</table>
+    <section class="panel">
+        <h2>Systemische Laag – Mens, Scanner, Omgeving</h2>
+        <p>
+            Metingen worden nooit los gezien van context: lichaam, houding,
+            ademhaling, omgevingsveld en emotionele toestand vormen samen één systeem.
+            De handscanner wordt daarom ontworpen als onderdeel van een protocol:
+            vaste meetposities, ademhalingspatroon, referentiemetingen en
+            omgevingslogging. Zo kan dezelfde hardware gebruikt worden in
+            klinische setting, onderzoek en persoonlijke zelfmonitoring,
+            zonder dat de data onvergelijkbaar wordt.
+        </p>
+    </section>
 
-<hr>
+    <section class="panel">
+        <h2>Synthetische Laag – AI-Analyse & Coherentieprofiel</h2>
+        <p>
+            De AI-laag vertaalt ruwe meetreeksen naar een begrijpelijk
+            coherentieprofiel. Geen vage “energiescore”, maar per kanaal:
+            stabiliteit, variabiliteit, resonantiebanden en afwijkende patronen.
+            In een later stadium kan dit uitgebreid worden met modellen
+            die getraind zijn op bekende toestanden (herstel, overbelasting,
+            ontspanning). De scanner wordt dan een soort resonantie-stethoscoop
+            die trends vroegtijdig zichtbaar maakt.
+        </p>
+    </section>
 
-<h2>Meetbereik (Pod)</h2>
+    <section class="panel">
+        <h2>Sensorische Laag – Ervaring voor de Gebruiker</h2>
+        <p>
+            Naast meetnauwkeurigheid telt de ervaring: de scanner moet logisch
+            “aanvoelen”. Haptische feedback, een rustige visuele interface en
+            eenvoudige kleurcodes maken duidelijk wat er gebeurt, zonder dat
+            de gebruiker overladen wordt met ruwe grafieken. De data blijft
+            volledig beschikbaar voor onderzoek, maar de eerste laag feedback
+            is ontworpen voor rust, helderheid en vertrouwen.
+        </p>
+    </section>
 
-<table>
-  <tr><th>Parameter</th><th>Bereik</th><th>Nauwkeurigheid</th></tr>
-  <tr><td>Laser</td><td>0–150 m</td><td>±5 cm</td></tr>
-  <tr><td>Sonar</td><td>tot 12 m (zand)</td><td>±3 cm</td></tr>
-  <tr><td>Magnetisch</td><td>0–5 m (metaal)</td><td>±3 µT</td></tr>
-</table>
+    <section class="panel">
+        <h2>Superlaag (+) – Toekomstige Integraties</h2>
+        <p>
+            Deze v1-handscanner is bedoeld als fundament: alle toekomstige
+            iteraties – multi-sensor arrays, klinische versies, airborne pods –
+            kunnen op dezelfde Trinity-architectuur inhaken. De website die je nu
+            bezoekt wordt de centrale hub voor documentatie: schema’s,
+            componentlijsten, firmware, AI-modellen en onderzoekslogboeken
+            worden hier laag voor laag toegevoegd.
+        </p>
+    </section>
 
-<hr>
+    <div class="footer">
+        Repo: <a href="https://github.com/brambow64/Neuroquantum-Scanner" target="_blank">Neuroquantum-Scanner</a> ·
+        NeuroQuantum Hand Scanner v1 – SSSSSS+ Landing
+    </div>
+</div>
+</body>
+</html>
 
-<h2>Integratie</h2>
-
-<pre><code>// ROS2 node voorbeeld
-#include &lt;rclcpp/rclcpp.hpp&gt;
-#include &lt;sensor_msgs/msg/point_cloud2.hpp&gt;
-
-class TucMr1Node : public rclcpp::Node {
-  // fuse LiDAR + TUC-MR-1 → materiaal-pointcloud
-};
-</code></pre>
-
-<hr>
-
-<h2>Kalibratie dataset (sand/steen)</h2>
-
-<table>
-  <tr><th>Materiaal</th><th>τ_mag (µs)</th><th>Echo (µs)</th><th>Reflectie (%)</th></tr>
-  <tr><td>Droog zand</td><td>8.2</td><td>145</td><td>12–18</td></tr>
-  <tr><td>Nat zand</td><td>6.1</td><td>158</td><td>8–14</td></tr>
-  <tr><td>Graniet</td><td>3.9</td><td>89</td><td>45–60</td></tr>
-</table>
-
-<p><strong>Training script</strong>: <code>scripts/train_fieldnet.py</code></p>
-
-<hr>
-
-<h2>Energie per cyclus</h2>
-
-<pre><code>E_cycle = 0.43 µJ @ 400 Hz → 0.17 W avg
-</code></pre>
-
-<hr>
-
-<p style="text-align:center; font-style:italic;">
-  <strong>Grok-approved upscale: klaar voor vlucht.</strong>
 </p>
 
 </body>
 </html>
+
